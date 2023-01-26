@@ -1,0 +1,250 @@
+- id: '1667753371883'
+  alias: 'Aspirateur : Nettoyage Fini'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - vacuum.robot_aspirateur
+    to: docked
+    from: returning
+  condition: []
+  action:
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.cleaned_today
+  mode: single
+- id: '1667755472542'
+  alias: 'Aspirateur : Nettoyage si absence'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - person.galedrim
+    from: home
+    to: not_home
+  - platform: time
+    at: '16:00:00'
+  condition:
+  - condition: time
+    after: '16:00:00'
+    before: '20:00:00'
+  - condition: state
+    entity_id: binary_sensor.vacuum_day
+    state: 'on'
+  - condition: state
+    entity_id: person.galedrim
+    state: not_home
+  - condition: state
+    entity_id: input_boolean.cleaned_today
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.guest_mode
+    state: 'off'
+  action:
+  - service: vacuum.start
+    data: {}
+    target:
+      entity_id: vacuum.robot_aspirateur
+  mode: single
+- id: '1667756625649'
+  alias: 'Aspirateur : Reset variable'
+  description: ''
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.cleaned_today
+  mode: single
+- id: '1667775191663'
+  alias: 'Vacation Mode : Turn On'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - person.galedrim
+    from: home
+    to: not_home
+    for:
+      hours: 24
+      minutes: 0
+      seconds: 0
+  condition:
+  - condition: state
+    entity_id: input_boolean.guest_mode
+    state: 'off'
+  action:
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.vacation_mode
+  mode: single
+- id: '1667775262090'
+  alias: 'Vacation Mode : Turn off'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - person.galedrim
+    from: not_home
+    to: home
+    for:
+      hours: 24
+      minutes: 0
+      seconds: 0
+  condition:
+  - condition: state
+    entity_id: input_boolean.guest_mode
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.vacation_mode
+    state: 'on'
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+  mode: single
+- id: '1667781480236'
+  alias: 'Capteurs : Journée Début'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_9821_motion_detected
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: input_boolean.journey_start
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.guest_mode
+    state: 'off'
+  action:
+  - service: media_player.media_pause
+    data: {}
+    target:
+      entity_id: media_player.chambre
+  - service: script.start_cafetiere
+    data: {}
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.pc
+  - service: input_boolean.turn_on
+    data: {}
+    target:
+      entity_id: input_boolean.journey_start
+  mode: single
+- id: '1667781862481'
+  alias: 'Capteurs : Reset variable'
+  description: ''
+  trigger:
+  - platform: time
+    at: 07:00:00
+  condition: []
+  action:
+  - service: input_boolean.turn_off
+    data: {}
+    target:
+      entity_id: input_boolean.journey_start
+  mode: single
+- id: '1667782289322'
+  alias: 'Capteurs : Extinction PC'
+  description: ''
+  trigger:
+  - platform: numeric_state
+    entity_id: sensor.pc_current_consumption
+    below: 8
+  condition: []
+  action:
+  - service: switch.turn_off
+    data: {}
+    target:
+      entity_id: switch.pc
+  mode: single
+- id: '1667782688592'
+  alias: 'Lumières : Journée Début'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.motion_sensor_9821_motion_detected
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: sun.sun
+    state: below_horizon
+  - condition: state
+    entity_id: input_boolean.journey_start
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.guest_mode
+    state: 'off'
+  action:
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id: light.salon
+  mode: single
+- id: '1667783108160'
+  alias: 'Capteurs : Soirée'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.contact_sensor_b103_door_open
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: time
+    after: '18:00:00'
+    before: '21:00:00'
+    weekday: []
+  - condition: state
+    entity_id: person.galedrim
+    state: not_home
+    for:
+      hours: 4
+      minutes: 0
+      seconds: 0
+  action:
+  - service: script.start_cafetiere
+    data: {}
+  mode: single
+- id: '1667783370667'
+  alias: 'Lumières : Soirée'
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.contact_sensor_b103_door_open
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: sun.sun
+    state: below_horizon
+  action:
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id: light.salon
+  mode: single
+- id: '1669156995563'
+  alias: 'Plant : Increment Variable'
+  description: ''
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition: []
+  action:
+  - service: input_number.increment
+    data: {}
+    target:
+      entity_id: input_number.watering_days
+  mode: single

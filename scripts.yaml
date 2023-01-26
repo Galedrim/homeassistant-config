@@ -1,0 +1,55 @@
+start_cafetiere:
+  alias: start_cafetiere
+  sequence:
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.bot_b92f
+  mode: single
+  icon: mdi:coffee
+nettoyer_cuisine:
+  alias: nettoyer_cuisine
+  sequence:
+  - service: xiaomi_miio.vacuum_clean_zone
+    data:
+      repeats: 1
+      zone:
+      - - 25152
+        - 23294
+        - 27241
+        - 26370
+    target:
+      entity_id: vacuum.robot_aspirateur
+  mode: single
+nettoyer_chambre:
+  alias: nettoyer_salon
+  sequence:
+  - service: xiaomi_miio.vacuum_clean_zone
+    data:
+      zone:
+      - - 26225
+        - 26601
+        - 28616
+        - 29466
+      - - 27357
+        - 29412
+        - 28116
+        - 30750
+      repeats: 1
+    target:
+      entity_id: vacuum.robot_aspirateur
+  mode: single
+'1674419751031':
+  alias: nettoyer_chambre
+  sequence:
+  - service: xiaomi_miio.vacuum_clean_zone
+    data:
+      zone:
+      - - 25106
+        - 19760
+        - 28207
+        - 22142
+      repeats: 1
+    target:
+      entity_id: vacuum.robot_aspirateur
+  mode: single
