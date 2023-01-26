@@ -1,0 +1,22 @@
+#        _             _
+#  _ __ | | __ _ _ __ | |_
+# | '_ \| |/ _` | '_ \| __|
+# | |_) | | (_| | | | | |_
+# | .__/|_|\__,_|_| |_|\__|
+# |_|
+#
+sansevieria:
+  sensors:
+    moisture: sensor.plant_sensor_25cf_moisture
+    battery: sensor.plant_sensor_25cf_battery
+    temperature: sensor.plant_sensor_25cf_temperature
+    conductivity: sensor.plant_sensor_25cf_conductivity
+    brightness: sensor.plant_sensor_25cf_illuminance
+  min_moisture: 7
+  max_moisture: 50
+  min_conductivity: 0
+  max_conductivity: 1000
+  min_brightness: 0
+  max_brightness: 60000
+  min_temperature: 10
+  max_temperature: 32

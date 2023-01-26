@@ -1,0 +1,46 @@
+#-
+#
+#  ___  ___ _ __  ___  ___  _ __ ___
+# / __|/ _ \ '_ \/ __|/ _ \| '__/ __|
+# \__ \  __/ | | \__ \ (_) | |  \__ \
+# |___/\___|_| |_|___/\___/|_|  |___/
+#
+#
+#  _____                    _       _
+# |_   _|__ _ __ ___  _ __ | | __ _| |_ ___    ___  ___ _ __  ___  ___  _ __ ___
+#   | |/ _ \ '_ ` _ \| '_ \| |/ _` | __/ _ \  / __|/ _ \ '_ \/ __|/ _ \| '__/ __|
+#   | |  __/ | | | | | |_) | | (_| | ||  __/  \__ \  __/ | | \__ \ (_) | |  \__ \
+#   |_|\___|_| |_| |_| .__/|_|\__,_|\__\___|  |___/\___|_| |_|___/\___/|_|  |___/
+#
+#
+- platform: template
+  sensors:
+    date_formatted:
+      friendly_name: "Date"
+      value_template: "{{ as_timestamp(states('sensor.date')) | timestamp_custom('%d-%m-%Y') }}"
+      icon_template: mdi:calendar
+
+#   ___  _   _
+#  / _ \| |_| |__   ___ _ __ ___
+# | | | | __| '_ \ / _ \ '__/ __|
+# | |_| | |_| | | |  __/ |  \__ \
+#  \___/ \__|_| |_|\___|_|  |___/
+#
+#calendar.achats
+- platform: time_date
+  display_options:
+    - date
+
+- platform: rest
+  name: Courses
+  method: GET
+  resource: "https://api.todoist.com/sync/v9/projects/get_data"
+  params:
+    project_id: 2255867570
+  headers:
+    Authorization: !secret todoist_api_token
+  value_template: "{{ value_json['project']['id'] }}"
+  json_attributes:
+    - project
+    - items
+  scan_interval: 30
