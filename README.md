@@ -67,9 +67,9 @@ Note : To obtain the coordinates of a cleaning zone for the vacuum, create the z
 ### Switches & Lights
 
 * Switches : Journey start :
-    * Turn on coffee
-    * Turn on PC (Power on after power outage)
-    * Stop Google Mini player
+    * Turn on coffee maker
+    * Turn on PC (Start after power on in BIOS)
+    * Stop Google Mini player (Google routine play YT Playlist as alarm clock)
     * Turn on light if sun below horizon
 * Switches : Turn on coffee maker when back to home
 * Switches : Turn off PC when power consumption is low
