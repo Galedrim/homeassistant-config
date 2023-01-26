@@ -8,15 +8,6 @@ Home           |  Vacuum Map
 :-------------------------:|:-------------------------:
 ![image](https://user-images.githubusercontent.com/84284891/214948895-a15e4ac6-9fb2-41cc-bc5d-f6e34a2adbc5.png) |  ![image](https://user-images.githubusercontent.com/84284891/214948917-fbe245bd-f910-44f0-9f31-2564ebc6ce1f.png)
 
-## Integratiom HACS
-
-* Xiaomi Cloud Map Extractor
-* Xiaomi Vacuum Map Card
-* Clock weather card
-* Layout-card
-* Mushroom
-* Mushroom theme
-
 ## My devices
 
 |   Switches   |   Units  |  Used  |
@@ -58,7 +49,7 @@ Home           |  Vacuum Map
 * SSH & Web Terminal
 * Studio Code Server
 
-# Integratiom HACS
+## Integratiom HACS
 
 * Clock weather card
 * Layout-card
