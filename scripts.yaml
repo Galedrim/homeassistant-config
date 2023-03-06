@@ -14,10 +14,10 @@ nettoyer_cuisine:
     data:
       repeats: 1
       zone:
-      - - 25152
-        - 23294
-        - 27241
-        - 26370
+      - - 23250
+        - 23913
+        - 26149
+        - 26059
     target:
       entity_id: vacuum.robot_aspirateur
   mode: single
@@ -27,14 +27,14 @@ nettoyer_chambre:
   - service: xiaomi_miio.vacuum_clean_zone
     data:
       zone:
-      - - 26225
-        - 26601
-        - 28616
-        - 29466
-      - - 27357
-        - 29412
-        - 28116
-        - 30750
+      - - 26647
+        - 22639
+        - 29010
+        - 24919
+      - - 28948
+        - 22460
+        - 30708
+        - 23490
       repeats: 1
     target:
       entity_id: vacuum.robot_aspirateur
@@ -45,10 +45,54 @@ nettoyer_chambre:
   - service: xiaomi_miio.vacuum_clean_zone
     data:
       zone:
-      - - 25106
-        - 19760
-        - 28207
-        - 22142
+      - - 19808
+        - 22840
+        - 22149
+        - 26081
+      repeats: 1
+    target:
+      entity_id: vacuum.robot_aspirateur
+  mode: single
+nettoyer_couloir:
+  alias: nettoyer_couloir
+  sequence:
+  - service: xiaomi_miio.vacuum_clean_zone
+    data:
+      zone:
+      - - 22043
+        - 22640
+        - 26574
+        - 23869
+      repeats: 1
+    target:
+      entity_id: vacuum.robot_aspirateur
+  mode: single
+nettoyer_tout:
+  alias: nettoyer_tout
+  sequence:
+  - service: xiaomi_miio.vacuum_clean_zone
+    data:
+      zone:
+      - - 23250
+        - 23913
+        - 26149
+        - 26059
+      - - 22043
+        - 22640
+        - 26574
+        - 23869
+      - - 19808
+        - 22840
+        - 22149
+        - 26081
+      - - 26647
+        - 22639
+        - 29010
+        - 24919
+      - - 28948
+        - 22460
+        - 30708
+        - 23490
       repeats: 1
     target:
       entity_id: vacuum.robot_aspirateur

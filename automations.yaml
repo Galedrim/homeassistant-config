@@ -42,10 +42,8 @@
     entity_id: input_boolean.guest_mode
     state: 'off'
   action:
-  - service: vacuum.start
+  - service: script.nettoyer_tout
     data: {}
-    target:
-      entity_id: vacuum.robot_aspirateur
   mode: single
 - id: '1667756625649'
   alias: 'Aspirateur : Reset variable'
@@ -61,7 +59,7 @@
       entity_id: input_boolean.cleaned_today
   mode: single
 - id: '1667775191663'
-  alias: 'Vacation Mode : Turn On'
+  alias: 'Vacation Mode : auto turn on'
   description: ''
   trigger:
   - platform: state
@@ -70,7 +68,7 @@
     from: home
     to: not_home
     for:
-      hours: 24
+      hours: 10
       minutes: 0
       seconds: 0
   condition:
@@ -82,9 +80,13 @@
     data: {}
     target:
       entity_id: input_boolean.vacation_mode
+  - type: turn_off
+    device_id: 98d70373f91d643a004793d778951e3f
+    entity_id: switch.google_mini
+    domain: switch
   mode: single
 - id: '1667775262090'
-  alias: 'Vacation Mode : Turn off'
+  alias: 'Vacation Mode : auto turn off'
   description: ''
   trigger:
   - platform: state
@@ -92,10 +94,6 @@
     - person.galedrim
     from: not_home
     to: home
-    for:
-      hours: 24
-      minutes: 0
-      seconds: 0
   condition:
   - condition: state
     entity_id: input_boolean.guest_mode
@@ -106,6 +104,12 @@
   action:
   - service: input_boolean.turn_off
     data: {}
+    target:
+      entity_id: input_boolean.vacation_mode
+  - type: turn_on
+    device_id: 98d70373f91d643a004793d778951e3f
+    entity_id: switch.google_mini
+    domain: switch
   mode: single
 - id: '1667781480236'
   alias: 'Capteurs : Journée Début'
@@ -122,6 +126,9 @@
     state: 'off'
   - condition: state
     entity_id: input_boolean.guest_mode
+    state: 'off'
+  - condition: state
+    entity_id: input_boolean.vacation_mode
     state: 'off'
   action:
   - service: media_player.media_pause
@@ -165,56 +172,6 @@
     data: {}
     target:
       entity_id: switch.pc
-  mode: single
-- id: '1667782688592'
-  alias: 'Lumières : Journée Début'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.motion_sensor_9821_motion_detected
-    from: 'off'
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: sun.sun
-    state: below_horizon
-  - condition: state
-    entity_id: input_boolean.journey_start
-    state: 'off'
-  - condition: state
-    entity_id: input_boolean.guest_mode
-    state: 'off'
-  action:
-  - service: light.turn_on
-    data: {}
-    target:
-      entity_id: light.salon
-  mode: single
-- id: '1667783108160'
-  alias: 'Capteurs : Soirée'
-  description: ''
-  trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.contact_sensor_b103_door_open
-    from: 'off'
-    to: 'on'
-  condition:
-  - condition: time
-    after: '18:00:00'
-    before: '21:00:00'
-    weekday: []
-  - condition: state
-    entity_id: person.galedrim
-    state: not_home
-    for:
-      hours: 4
-      minutes: 0
-      seconds: 0
-  action:
-  - service: script.start_cafetiere
-    data: {}
   mode: single
 - id: '1667783370667'
   alias: 'Lumières : Soirée'
